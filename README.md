@@ -1,5 +1,5 @@
 # mage-event-lookup
-###Event Lookup tool for Magento 1.x
+### Event Lookup tool for Magento 1.x
 A simple tool, that does one thing.
 It let's you search all the events in magento config.xml files that contain your search word.
 
@@ -26,13 +26,13 @@ It returns json formated results:
 ]
 
 ```
-###Usage
-####build
+### Usage
+#### build
 ```
 go build -o mage_event_lookup main.go
 ```
 
-####search events
+#### search events
 ```
 ./mage_event_lookup --dir=./test --event=catalog
 ```
