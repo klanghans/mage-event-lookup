@@ -3,7 +3,7 @@
 A simple tool, that does one thing.
 It let's you search all the events in magento config.xml files that contain your search word.
 
-Even though my IDE lets me search through the codebase the information it contains is always hidden from plain sight.
+Even though my IDE lets me search through the codebase, the information it contains is always hidden from plain sight.
 
 It returns json formated results:
 ```
