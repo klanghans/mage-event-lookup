@@ -11,7 +11,7 @@ Use cases:
   - What observers are subscribed on it
 - search for a specific event name and get all registered Observers returned, sorted by Magento code pool
 
-The json formated response let you parse the result in a programatic way.
+The json formated response let you parse the result in a programmatic way.
 
 #####json formated results:
 ```
