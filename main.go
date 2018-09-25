@@ -85,7 +85,7 @@ func main() {
 	}
 
 	elapsed := time.Since(start)
-	os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s", elapsed)))
+	os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
 }
 
 func (events *EventCollection) extractEvents(eventList *xmlquery.Node, f *os.File) {
