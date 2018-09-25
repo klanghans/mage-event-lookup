@@ -5,7 +5,15 @@ It let's you search all the events in magento config.xml files that contain your
 
 Even though my IDE lets me search through the codebase, the information it contains is always hidden from plain sight.
 
-It returns json formated results:
+Use cases:
+- search for a partial event name and get all registered Observers returned, sorted by Magento code pool. This lets you figure out: 
+  - What event names exists at all
+  - What observers are subscribed on it
+- search for a specific event name and get all registered Observers returned, sorted by Magento code pool
+
+The json formated response let you parse the result in a programatic way.
+
+#####json formated results:
 ```
 [
 
@@ -37,6 +45,9 @@ go build -o mage_event_lookup main.go
 ./mage_event_lookup --dir=./test --event=catalog
 ```
 
-
+#### tilde expansion
+```
+./mage_event_lookup --dir=~/your-magento-path --event=catalog
+```
 
 
