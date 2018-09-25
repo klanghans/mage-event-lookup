@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 	"time"
@@ -56,6 +57,10 @@ func main() {
 		os.Exit(128)
 	}
 
+	if strings.HasPrefix(workingDir, "~/") {
+		workingDir = expandTilde(workingDir)
+	}
+
 	glob, err := doublestar.Glob(filepath.Clean(workingDir + "/**/config.xml"))
 	if err != nil {
 		panic(err)
@@ -86,6 +91,12 @@ func main() {
 
 	elapsed := time.Since(start)
 	os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
+}
+
+func expandTilde(path string) string {
+	usr, _ := user.Current()
+	dir := usr.HomeDir
+	return filepath.Join(dir, path[2:])
 }
 
 func (events *EventCollection) extractEvents(eventList *xmlquery.Node, f *os.File) {
@@ -187,7 +198,7 @@ func codePool(f *os.File) (pool string) {
 	parts := strings.Split(f.Name(), string(filepath.Separator))
 
 PartsLoop:
-	for i := 0; i < len(parts); i++ {
+	for i := 1; i < len(parts); i++ {
 		if parts[i-1] == "code" {
 			pool = parts[i]
 			break PartsLoop
