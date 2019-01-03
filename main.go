@@ -53,7 +53,11 @@ func main() {
 	start := time.Now()
 
 	if workingDir == "" {
-		os.Stdout.Write([]byte("No working dir provided!"))
+		_, wErr := os.Stdout.Write([]byte("No working dir provided!\n"))
+		if wErr != nil {
+			panic(wErr)
+		}
+		
 		os.Exit(128)
 	}
 
@@ -80,7 +84,10 @@ func main() {
 		for _, eventList := range events {
 			eventCollection.extractEvents(eventList, f)
 		}
-		f.Close()
+		cErr := f.Close()
+		if cErr != nil{
+			panic(cErr)
+		}
 	}
 
 	if searchEvent == "" {
@@ -90,7 +97,10 @@ func main() {
 	}
 
 	elapsed := time.Since(start)
-	os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
+	_, err = os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func expandTilde(path string) string {
@@ -176,7 +186,10 @@ func (events *EventCollection) print() {
 	if err != nil {
 		panic(err)
 	}
-	os.Stdout.Write(j)
+	_, err = os.Stdout.Write(j)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (events *EventCollection) filterByEvent(event string) {
@@ -190,8 +203,10 @@ func (events *EventCollection) filterByEvent(event string) {
 	if err != nil {
 		panic(err)
 	}
-	os.Stdout.Write(j)
-
+	_, err = os.Stdout.Write(j)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func codePool(f *os.File) (pool string) {

@@ -13,7 +13,7 @@ Use cases:
 
 The json formated response let you parse the result in a programmatic way.
 
-#####json formated results:
+####json formated results:
 ```
 [
 
@@ -42,12 +42,12 @@ go build -o mage_event_lookup main.go
 
 #### search events
 ```
-./mage_event_lookup --dir=./test --event=catalog
+./mage_event_lookup --dir ./test --event=catalog
 ```
 
 #### tilde expansion
 ```
-./mage_event_lookup --dir=~/your-magento-path --event=catalog
+./mage_event_lookup --dir ~/your-magento-path --event=catalog
 ```
 
 
