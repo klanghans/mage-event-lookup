@@ -33,11 +33,14 @@ type EventCollection struct {
 	List                []*Event
 }
 
-var searchEvent, workingDir string
+var searchEvent, workingDir, mode string
+var benchmark bool
 
 func init() {
 	flag.StringVar(&searchEvent, "event", "", "event to search for")
 	flag.StringVar(&workingDir, "dir", "", "directory to search in")
+	flag.StringVar(&mode, "mode", "", "modus to display: list (default), graph")
+	flag.BoolVar(&benchmark, "b", false, "display benchmark time")
 	flag.Parse()
 }
 
@@ -51,13 +54,12 @@ func NewEventCollection() *EventCollection {
 
 func main() {
 	start := time.Now()
-
 	if workingDir == "" {
 		_, wErr := os.Stdout.Write([]byte("No working dir provided!\n"))
 		if wErr != nil {
 			panic(wErr)
 		}
-		
+
 		os.Exit(128)
 	}
 
@@ -72,6 +74,31 @@ func main() {
 
 	eventCollection := NewEventCollection()
 
+	switch mode {
+	case "graph":
+		buildCollection(glob, eventCollection)
+		eventCollection.enrichWithDispatch()
+	case "list":
+	default:
+		buildCollection(glob, eventCollection)
+		if searchEvent == "" {
+			eventCollection.print()
+		} else {
+			eventCollection.filterByEvent(searchEvent)
+		}
+	}
+
+	elapsed := time.Since(start)
+
+	if benchmark {
+		_, err = os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func buildCollection(glob []string, eventCollection *EventCollection) {
 	for _, v := range glob {
 		f, err := os.Open(v)
 		if err != nil {
@@ -85,21 +112,9 @@ func main() {
 			eventCollection.extractEvents(eventList, f)
 		}
 		cErr := f.Close()
-		if cErr != nil{
+		if cErr != nil {
 			panic(cErr)
 		}
-	}
-
-	if searchEvent == "" {
-		eventCollection.print()
-	} else {
-		eventCollection.filterByEvent(searchEvent)
-	}
-
-	elapsed := time.Since(start)
-	_, err = os.Stdout.Write([]byte(fmt.Sprintf("\nelapsed time: %s\n", elapsed)))
-	if err != nil {
-		panic(err)
 	}
 }
 
@@ -179,6 +194,10 @@ EventLoop:
 
 	}
 
+}
+
+func (events *EventCollection) enrichWithDispatch() {
+	// find all dispatchEvent in code under app/code/**/
 }
 
 func (events *EventCollection) print() {
