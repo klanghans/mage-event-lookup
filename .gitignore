@@ -12,3 +12,5 @@
 *.out
 .idea/
 mage-event-lookup
+/vendor/*
+/mage_event_lookup
